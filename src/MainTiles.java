@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -16,6 +17,7 @@ public class MainTiles extends JFrame {
         setLayout(new BorderLayout());
 
         grid = new Grid();
+        grid.setBorder(new LineBorder(Color.WHITE));
 
         // Utilisation d'un JPanel avec GridBagLayout pour centrer la grille
         JPanel gridContainer = new JPanel(new GridBagLayout());
@@ -23,15 +25,38 @@ public class MainTiles extends JFrame {
         gridContainer.add(grid);
         // Ajout du conteneur centré à la fenêtre principale
         add(gridContainer, BorderLayout.CENTER);
+        gridContainer.setBackground(Color.BLACK);
 
 
-        JPanel controlPanel = new JPanel(new GridLayout(4, 1, 0, 0));
-
-        controlPanel.setBorder(new LineBorder(Color.BLACK));
-        controlPanel.setBackground(Color.DARK_GRAY);
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBackground(Color.black);
+        controlPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.BLACK, 5), // Bordure extérieure
+                new EmptyBorder(10, 0, 10, 15) // Espace intérieur : top, left, bottom, right
+        ));
+        controlPanel.setLayout(new GridLayout(6, 1, 10, 10));
         add(controlPanel, BorderLayout.EAST);
 
-        JButton buttonStartStop = new JButton("Start / Stop");
+
+
+
+        // icônes
+        ImageIcon startStopIcon = loadImageIcon("icons/start_stop_icon.png", 50, 50);
+        ImageIcon nextIcon = loadImageIcon("icons/next_icon.png", 50, 50);
+        ImageIcon randomizeIcon = loadImageIcon("icons/randomize_icon.png", 50, 50);
+        ImageIcon clearIcon = loadImageIcon("icons/clear_icon.png", 50, 50);
+
+        // boutons
+        JButton buttonStartStop = new JButton(startStopIcon);
+        JButton buttonNext = new JButton(nextIcon);
+        JButton buttonRandomize = new JButton(randomizeIcon);
+        JButton buttonClear = new JButton(clearIcon);
+
+
+
+
+
+        //actionlisteners
 
         buttonStartStop.addActionListener(new ActionListener() {
             @Override
@@ -41,7 +66,6 @@ public class MainTiles extends JFrame {
         });
         controlPanel.add(buttonStartStop);
 
-        JButton buttonNext = new JButton("Next");
         buttonNext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,7 +74,7 @@ public class MainTiles extends JFrame {
         });
         controlPanel.add(buttonNext);
 
-        JButton buttonRandomize = new JButton("Randomize");
+
         buttonRandomize.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,7 +83,6 @@ public class MainTiles extends JFrame {
         });
         controlPanel.add(buttonRandomize);
 
-        JButton buttonClear = new JButton("Clear");
         buttonClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,6 +90,14 @@ public class MainTiles extends JFrame {
             }
         });
         controlPanel.add(buttonClear);
+
+
+        //style des boutons
+        styleButton(buttonStartStop);
+        styleButton(buttonNext);
+        styleButton(buttonRandomize);
+        styleButton(buttonClear);
+
 
 
 
@@ -77,6 +108,28 @@ public class MainTiles extends JFrame {
         setResizable(false);
     }
 
+
+
+
+    private void styleButton(JButton button) {
+
+        button.setBackground(Color.BLACK);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.WHITE, 5), // Bordure extérieure
+                new EmptyBorder(10, 10, 10, 10) // Espace intérieur : top, left, bottom, right
+        ));
+
+    }
+
+    private ImageIcon loadImageIcon(String path, int width, int height) {
+        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(path));
+        Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(image);
+    }
 
 
 
