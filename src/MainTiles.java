@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -6,6 +7,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 
 public class MainTiles extends JFrame {
@@ -99,11 +103,17 @@ public class MainTiles extends JFrame {
         styleButton(buttonClear);
 
 
+        try {
+            BufferedImage icon = ImageIO.read(new File("res/logo.png"));
+            setIconImage(icon);
+        }catch(IOException e){
 
-
+        }
 
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("a Conway's Game Of Life simulator");
+
         setSize(800, 700);
         setResizable(false);
     }
